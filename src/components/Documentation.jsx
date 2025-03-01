@@ -55,7 +55,7 @@ export default function Documentation() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 p-6">
+    <div className="flex flex-col min-h-screen bg-amber-500 p-6">
       <h1 className="text-2xl font-bold mb-4">Documentation</h1>
 
       {/* Subject Cards */}
@@ -64,7 +64,7 @@ export default function Documentation() {
           {subjects.map((subject) => (
             <div
               key={subject.id}
-              className="p-4 bg-white shadow-md rounded-md cursor-pointer"
+              className="p-4 bg-red-700 shadow-md rounded-md cursor-pointer"
               onClick={() => setSelectedSubject(subject.id)}
             >
               <h2 className="text-lg font-semibold mb-2">{subject.name}</h2>
