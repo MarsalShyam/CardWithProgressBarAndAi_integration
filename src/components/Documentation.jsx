@@ -1,66 +1,47 @@
+import React from "react";
 import { useState, useEffect } from "react";
+import {subjects} from "../constant/index.jsx"
 
-const subjects = [
-  {
-    id: "subject1",
-    name: "React Basics",
-    topics: [
-      { id: "topic1", name: "Introduction" },
-      { id: "topic2", name: "Components" },
-      { id: "topic3", name: "State & Props" },
-    ],
-  },
-  {
-    id: "subject2",
-    name: "Advanced React",
-    topics: [
-      { id: "topic4", name: "Hooks" },
-      { id: "topic5", name: "Context API" },
-      { id: "topic6", name: "Performance Optimization" },
-    ],
-  },
-];
 
-export default function Documentation() {
-  const [completedTopics, setCompletedTopics] = useState({});
-  const [selectedSubject, setSelectedSubject] = useState(null);
+const Documentation = () => {
+  const [completedTopics, setCompletedTopics] = useState({})
+  const [selectedSubject, setSelectedSubject] = useState(null)
 
   useEffect(() => {
-    const savedProgress = JSON.parse(localStorage.getItem("completedTopics")) || {};
+    const savedProgress = JSON.parse(localStorage.getItem("completedTopics")) || {}
     setCompletedTopics(savedProgress);
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (Object.keys(completedTopics).length > 0) {
-      localStorage.setItem("completedTopics", JSON.stringify(completedTopics));
+      localStorage.setItem("completedTopics", JSON.stringify(completedTopics))
     }
-  }, [completedTopics]);
+  }, [completedTopics])
   
 
-  const toggleCompletion = (subjectId, topicId) => {
+  const toggleOnCompletion = (subjectId, topicId) => {
     setCompletedTopics((prev) => {
-      const updated = { ...prev };
-      if (!updated[subjectId]) updated[subjectId] = [];
+      const updated = { ...prev }
+      if (!updated[subjectId]) updated[subjectId] = []
       updated[subjectId] = updated[subjectId].includes(topicId)
         ? updated[subjectId].filter((id) => id !== topicId)
-        : [...updated[subjectId], topicId];
-      return updated;
-    });
-  };
+        : [...updated[subjectId], topicId]
+      return updated
+    })
+  }
 
-  const getProgress = (subjectId) => {
-    const total = subjects.find((sub) => sub.id === subjectId).topics.length;
-    const completed = completedTopics[subjectId]?.length || 0;
+  const getProgressbar = (subjectId) => {
+    const total = subjects.find((sub) => sub.id === subjectId).topics.length
+    const completed = completedTopics[subjectId]?.length || 0
     return (completed / total) * 100;
-  };
-
+  }
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4">Documentation</h1>
+      <h1 className="text-2xl font-bold mb-4">Documentation of Topic wise</h1>
 
-      {/* Subject Cards */}
+      {/* This theCards */}
       {!selectedSubject && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="border grid grid-cols-1 md:grid-cols-2 gap-6">
           {subjects.map((subject) => (
             <div
               key={subject.id}
@@ -71,7 +52,7 @@ export default function Documentation() {
               <div className="w-full bg-gray-300 rounded-full h-4">
                 <div
                   className="h-4 bg-green-500 rounded-full"
-                  style={{ width: `${getProgress(subject.id)}%` }}
+                  style={{ width: `${getProgressbar(subject.id)}%` }}
                 ></div>
               </div>
             </div>
@@ -79,7 +60,7 @@ export default function Documentation() {
         </div>
       )}
 
-      {/* Inside Documentation */}
+      {/* Documentation start from here */}
       {selectedSubject && (
         <div>
           <button
@@ -89,7 +70,7 @@ export default function Documentation() {
             Back to Subjects
           </button>
           <div className="flex">
-            {/* Sidebar */}
+            {/* this is the Sidebar for subjects */}
             <aside className="w-64 bg-white p-4 shadow-lg">
               <h2 className="text-lg font-bold">Topics</h2>
               <ul>
@@ -100,7 +81,7 @@ export default function Documentation() {
                       <input
                         type="checkbox"
                         checked={completedTopics[selectedSubject]?.includes(topic.id) || false}
-                        onChange={() => toggleCompletion(selectedSubject, topic.id)}
+                        onChange={() => toggleOnCompletion(selectedSubject, topic.id)}
                         className="h-4 w-4 text-blue-500"
                       />
                       {topic.name}
@@ -109,7 +90,7 @@ export default function Documentation() {
               </ul>
             </aside>
 
-            {/* Main Content */}
+            {/* inner side Content */}
             <div className="flex-1 p-6">
               {subjects
                 .find((sub) => sub.id === selectedSubject)
@@ -118,15 +99,15 @@ export default function Documentation() {
                     <h3 className="text-xl font-semibold">{topic.name}</h3>
                     <p className="text-gray-600">Lorem ipsum content for {topic.name}...</p>
                     <button
-                      onClick={() => toggleCompletion(selectedSubject, topic.id)}
+                      onClick={() => toggleOnCompletion(selectedSubject, topic.id)}
                       className={`mt-2 px-4 py-2 rounded-md text-white transition duration-300 ${
                         completedTopics[selectedSubject]?.includes(topic.id)
-                          ? "bg-green-500" : "bg-blue-500"
+                          ? "bg-green-500" : "bg-blue-800"
                       }`}
                     >
                       {completedTopics[selectedSubject]?.includes(topic.id)
-                        ? "Mark as Incomplete"
-                        : "Mark as Completed"}
+                        ? "Marking as Incomplete"
+                        : "Marking as Completed"}
                     </button>
                   </div>
                 ))}
@@ -135,5 +116,11 @@ export default function Documentation() {
         </div>
       )}
     </div>
-  );
+  )
 }
+
+export default Documentation
+
+
+
+
