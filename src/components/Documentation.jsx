@@ -64,7 +64,7 @@ export default function Documentation() {
           {subjects.map((subject) => (
             <div
               key={subject.id}
-              className="p-4 bg-red-700 shadow-md rounded-md cursor-pointer"
+              className="p-4 bg-orange-700 shadow-md rounded-md cursor-pointer"
               onClick={() => setSelectedSubject(subject.id)}
             >
               <h2 className="text-lg font-semibold mb-2">{subject.name}</h2>
